@@ -18,7 +18,7 @@ public static class Functions
 		var f = EdgeProviders.UniversalDistributionForEdgeSize(c.Genes);
 		return Enumerable.Range(0, 5).Select(_ =>
 		{
-			var test = new PeelableHyperGraph(10, 1, f);
+			var test = new PeelableHyperGraph(10000, 1.0, f);
 			return new RemovalSearchForOptimalFulness(test).Run();
 		}
 		)
@@ -28,9 +28,9 @@ public static class Functions
 	public static double TrueFitness(Chromosome c)
 	{
 		var f = EdgeProviders.UniversalDistributionForEdgeSize(c.Genes);
-		return Enumerable.Range(0, 5).Select(_ =>
+		return Enumerable.Range(0, 1).Select(_ =>
 		{
-			return new BinarySearchForOptimalFulness(1, 0.2, 10, (fullness) => new PeelableHyperGraph(1000, fullness, f)).Run();
+			return new BinarySearchForOptimalFulness(1, 0.2, 5, (fullness) => new PeelableHyperGraph(10000, fullness, f)).Run();
 		}
 		)
 		.Min();

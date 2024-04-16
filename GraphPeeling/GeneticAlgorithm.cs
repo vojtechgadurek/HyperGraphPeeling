@@ -116,8 +116,6 @@ namespace GraphPeeling
 				p.Add(GetRandomChromosome(chromosomeSize));
 			}
 			return new Population(p);
-
-
 		}
 
 		public Population Averaging(Population x, int numberOfNewItems)
@@ -171,18 +169,34 @@ namespace GraphPeeling
 
 			}
 
-			Population population = GetRandomPopulation(_populationSize, 40);
+			int chromosomeLenght = 10;
+
+			Population population = GetRandomPopulation(_populationSize, chromosomeLenght);
 			for (int i = 0; i < _numberOfIterations; i++)
 			{
-				foreach (var _ in Enumerable.Range(0, 20)) population.chromosomes.Add(GetReallyRandomChromosome(40));
+				foreach (var _ in Enumerable.Range(0, 20)) population.chromosomes.Add(GetReallyRandomChromosome(chromosomeLenght));
 				population = BasicMutation(population);
 				population = Averaging(population, 100);
 
-				var chromosomesWithFitness = new List<(Chromosome, double)>(population.chromosomes.Count);
-				foreach (var c in population.chromosomes)
+				var chromosomesWithFitness = new (Chromosome, double)[population.chromosomes.Count];
+
+
+
+				Parallel.For(0, population.chromosomes.Count, (i) =>
 				{
-					chromosomesWithFitness.Add((c, Functions.TrueFitness(c)));
-				};
+					var c = population.chromosomes[i];
+					var x = (c, Functions.Fitness(c));
+					chromosomesWithFitness[i] = x;
+				});
+
+				population.chromosomes.ForEach(c =>
+				{
+					var sum = c.Genes.Sum();
+					for (int i = 0; i < c.Genes.Length; i++)
+					{
+						c.Genes[i] /= sum * _random.Next(1, 10);
+					}
+				});
 
 				var minFitness = chromosomesWithFitness.Min(x => x.Item2);
 
@@ -193,9 +207,11 @@ namespace GraphPeeling
 				Console.Write(minFitness);
 				Console.Write(" ");
 				Console.WriteLine(best.Item2);
+				Console.WriteLine(Functions.TrueFitness(best.Item1));
 				PrintGene(best.Item1.Genes);
 				population = new Population(chromosomesWithFitness.OrderByDescending(x => x.Item2).Take(_populationSize).Select(x => x.Item1).ToList());
-				_mutationAlpha *= 0.99;
+
+				_mutationAlpha *= 0.998;
 			}
 		}
 

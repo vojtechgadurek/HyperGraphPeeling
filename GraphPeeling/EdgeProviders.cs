@@ -29,9 +29,10 @@ namespace GraphPeeling
 						{
 							sum2 += values[i];
 							if (x < sum2) break;
+							numberOfVertices++;
 						}
 
-						numberOfVertices++;
+						numberOfVertices += 1;
 
 						//Build such edge
 						var verticesEdge = new Vertex[numberOfVertices];

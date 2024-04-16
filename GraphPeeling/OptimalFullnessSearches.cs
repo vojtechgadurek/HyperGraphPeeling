@@ -25,7 +25,7 @@ namespace GraphPeeling
 		{
 			for (int step = 0; step < _numberOfSteps; step++)
 			{
-				double middle = (_upperBoundOnFullness + _lowerBoundOnFullness) / 2;
+				double middle = (_upperBoundOnFullness + _lowerBoundOnFullness) / (double)2;
 				PeelableHyperGraph test = PeableHyperGraphConstructor(middle);
 				test.FindPure();
 				var answer = test.Peel();
@@ -62,7 +62,7 @@ namespace GraphPeeling
 				if (counter >= _test.NumberOfEdges) break;
 			}
 			double answer;
-			answer = (_test.NumberOfEdges - counter) / _test.NumberOfVertices;
+			answer = (_test.NumberOfEdges - counter) / (double)_test.NumberOfVertices;
 			return answer;
 		}
 	}

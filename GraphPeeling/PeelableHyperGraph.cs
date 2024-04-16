@@ -108,6 +108,7 @@ namespace GraphPeeling
 		}
 		public void RemoveEdge(Edge edge)
 		{
+			if (edge.IsRemoved) return;
 			edge.Remove();
 			AddEdgesVerticesIfPure(edge, _pures);
 			removed++;

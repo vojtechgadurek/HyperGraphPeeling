@@ -5,6 +5,10 @@ namespace HyperGraphTesting
 		[Fact]
 		public void TestBasicDecoding()
 		{
+			var x = (Vertexvertices, n) =>
+			{
+
+			}
 
 		}
 	}
